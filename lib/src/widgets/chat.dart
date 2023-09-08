@@ -67,6 +67,7 @@ class Chat extends StatefulWidget {
     this.l10n = const ChatL10nEn(),
     this.listBottomWidget,
     required this.messages,
+    this.messagesStartAtTop = false,
     this.nameBuilder,
     this.onAttachmentPressed,
     this.onAvatarTap,
@@ -217,6 +218,8 @@ class Chat extends StatefulWidget {
   /// List of [types.Message] to render in the chat widget.
   final List<types.Message> messages;
 
+  final bool messagesStartAtTop;
+
   /// See [Message.nameBuilder].
   final Widget Function(types.User)? nameBuilder;
 
@@ -358,11 +361,17 @@ class ChatState extends State<Chat> {
   }
 
   /// Scroll to the message with the specified [id].
-  void scrollToMessage(String id, {Duration? duration}) =>
-      _scrollController.scrollToIndex(
-        _autoScrollIndexById[id]!,
-        duration: duration ?? scrollAnimationDuration,
-      );
+  void scrollToMessage(
+    String id, {
+    Duration? duration,
+    AutoScrollPosition? preferPosition,
+  }) {
+    _scrollController.scrollToIndex(
+      _autoScrollIndexById[id]!,
+      duration: duration ?? scrollAnimationDuration,
+      preferPosition: preferPosition,
+    );
+  }
 
   Widget _emptyStateBuilder() =>
       widget.emptyState ??
@@ -576,6 +585,9 @@ class ChatState extends State<Chat> {
                 Container(
                   color: widget.theme.backgroundColor,
                   child: Column(
+                    mainAxisAlignment: widget.messagesStartAtTop
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.start,
                     children: [
                       Flexible(
                         child: widget.messages.isEmpty
@@ -611,6 +623,7 @@ class ChatState extends State<Chat> {
                                         widget.onEndReachedThreshold,
                                     scrollController: _scrollController,
                                     scrollPhysics: widget.scrollPhysics,
+                                    startAtTop: widget.messagesStartAtTop,
                                     typingIndicatorOptions:
                                         widget.typingIndicatorOptions,
                                     useTopSafeAreaInset:
