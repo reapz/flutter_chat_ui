@@ -242,6 +242,7 @@ class _ChatListState extends State<ChatList>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final offsetFromBottom = sc.position.maxScrollExtent - sc.position.pixels;
       if (offsetFromBottom < 40.0) {
+        sc.position.correctPixels(sc.position.pixels - 0.1);
         sc.position.notifyListeners();
       }
     });
