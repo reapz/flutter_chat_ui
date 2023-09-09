@@ -136,7 +136,8 @@ class _InputState extends State<Input> {
         );
 
     return Focus(
-      autofocus: !widget.options.autofocus,
+      autofocus: widget.options.autofocus,
+      focusNode: _inputFocusNode,
       onFocusChange: widget.options.onFocusChange,
       child: Padding(
         padding: InheritedChatTheme.of(context).theme.inputMargin,
@@ -184,7 +185,6 @@ class _InputState extends State<Input> {
                             hintText:
                                 InheritedL10n.of(context).l10n.inputPlaceholder,
                           ),
-                      focusNode: _inputFocusNode,
                       keyboardType: widget.options.keyboardType,
                       maxLines: 5,
                       minLines: 1,
