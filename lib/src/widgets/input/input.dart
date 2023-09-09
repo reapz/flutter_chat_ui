@@ -137,6 +137,7 @@ class _InputState extends State<Input> {
 
     return Focus(
       autofocus: !widget.options.autofocus,
+      onFocusChange: widget.options.onFocusChange,
       child: Padding(
         padding: InheritedChatTheme.of(context).theme.inputMargin,
         child: Material(
@@ -249,6 +250,7 @@ class InputOptions {
   const InputOptions({
     this.inputClearMode = InputClearMode.always,
     this.keyboardType = TextInputType.multiline,
+    this.onFocusChange,
     this.onTextChanged,
     this.onTextFieldTap,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
@@ -264,6 +266,9 @@ class InputOptions {
 
   /// Controls the [Input] keyboard type. Defaults to [TextInputType.multiline].
   final TextInputType keyboardType;
+
+  /// Will be called whenever the [TextField] focus changes.
+  final void Function(bool)? onFocusChange;
 
   /// Will be called whenever the text inside [TextField] changes.
   final void Function(String)? onTextChanged;
